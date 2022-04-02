@@ -16,6 +16,8 @@ namespace Base.Services.Implementation.Complaints
         public string Statement { get; set; }
         public string Respondent { get; set; }
         public string Involved { get; set; }
+        public string ProofImgPath { get; set; }
+        public string VerificationImgPath { get; set; }
         public string Location { get; set; }
         public string Remarks { get; set; }
     }

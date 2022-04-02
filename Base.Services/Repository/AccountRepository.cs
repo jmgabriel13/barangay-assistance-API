@@ -19,5 +19,20 @@ namespace Base.Services.Repository
         {
             return repository.Get().Where(x => x.IsActive && !x.IsDeleted).ToList();
         }
+
+        public static UserModel GetAccountById(this IRepository<UserModel> repository, int id)
+        {
+            return repository.Get().Where(x => x.Id == id && x.IsActive && !x.IsDeleted).FirstOrDefault();
+        }
+
+        public static bool ValidateUsername(this IRepository<UserModel> repository, string username)
+        {
+            return repository.Get().Any(w => w.Username.Trim().ToLower() == username);
+        }
+
+        public static bool ValidateEmail(this IRepository<UserModel> repository, string email)
+        {
+            return repository.Get().Any(w => w.Email.Trim().ToLower() == email);
+        }
     }
 }

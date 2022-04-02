@@ -4,14 +4,16 @@ using Base.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Base.Entities.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220327063401_UpdateRequiredUserModel1")]
+    partial class UpdateRequiredUserModel1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,11 +29,6 @@ namespace Base.Entities.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Complainant")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContactNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreatedBy")
@@ -43,12 +40,7 @@ namespace Base.Entities.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Involved")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -58,11 +50,6 @@ namespace Base.Entities.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProofImgPath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Remarks")
@@ -72,15 +59,10 @@ namespace Base.Entities.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Statement")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
-
-                    b.Property<string>("VerificationImgPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -224,9 +206,9 @@ namespace Base.Entities.Migrations
                         {
                             Id = 1,
                             Age = 20,
-                            BirthDate = new DateTime(2022, 3, 31, 15, 6, 25, 666, DateTimeKind.Local).AddTicks(6421),
+                            BirthDate = new DateTime(2022, 3, 27, 14, 33, 59, 657, DateTimeKind.Local).AddTicks(6581),
                             CreatedBy = 0,
-                            DateCreated = new DateTime(2022, 3, 31, 15, 6, 25, 667, DateTimeKind.Local).AddTicks(4481),
+                            DateCreated = new DateTime(2022, 3, 27, 14, 33, 59, 658, DateTimeKind.Local).AddTicks(5540),
                             Email = "admin@mail.com",
                             FirstName = "Role",
                             Gender = 1,
@@ -238,8 +220,8 @@ namespace Base.Entities.Migrations
                             PhoneNumber = "09123456789",
                             Position = 1,
                             Purok = "Purok 1",
-                            TermFrom = new DateTime(2022, 3, 31, 15, 6, 25, 667, DateTimeKind.Local).AddTicks(3176),
-                            TermTo = new DateTime(2023, 3, 31, 15, 6, 25, 667, DateTimeKind.Local).AddTicks(3752),
+                            TermFrom = new DateTime(2022, 3, 27, 14, 33, 59, 658, DateTimeKind.Local).AddTicks(2704),
+                            TermTo = new DateTime(2023, 3, 27, 14, 33, 59, 658, DateTimeKind.Local).AddTicks(3891),
                             UpdatedBy = 0,
                             Username = "admin"
                         });

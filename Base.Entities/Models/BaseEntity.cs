@@ -10,7 +10,7 @@ namespace Base.Entities.Models
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
+        public DateTime? DateModified { get; set; }
         public int CreatedBy { get; set; }
         public int UpdatedBy { get; set; }
 
@@ -19,7 +19,6 @@ namespace Base.Entities.Models
             IsActive = true;
             IsDeleted = false;
             DateCreated = DateTime.Now;
-            DateModified = DateTime.Now;
         }
     }
 }

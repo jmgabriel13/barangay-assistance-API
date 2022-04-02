@@ -4,13 +4,14 @@ using Base.Services.Implementation.Complaints;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace barangay_assistance_api.Controllers
 {
     [Route("api/complaints")]
     [ApiController]
-    [Authorize]
     public class ComplaintsController : ControllerBase
     {
         private readonly IComplaints _complaints;
@@ -41,19 +42,19 @@ namespace barangay_assistance_api.Controllers
             {
                 // get specific header
                 Request.Headers.TryGetValue("id", out var id);
-                var userId = Convert.ToInt32(id.First());
+                var userId = 0;
 
-                // validate job name
-                var valid = _complaints.ValidateComplaints(compObject.Complainant);
-
-                if (valid)
+                if (id.Count > 0)
                 {
+                    userId = Convert.ToInt32(id.First());
                     _complaints.Add(compObject, userId);
-                    return Ok();
+
+                    return Ok(new ApiOkResponse());
                 }
 
-                return BadRequest("Complaints already exist!");
+                _complaints.Add(compObject, userId);
 
+                return Ok(new ApiOkResponse());
             }
             catch (Exception x)
             {
@@ -62,6 +63,7 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize]
         public IActionResult Update([FromBody] ComplaintsModel jobObject)
         {
             try
@@ -89,16 +91,24 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpGet("delete/{complaintId}")]
-        public IActionResult Delete(int jobId)
+        [Authorize]
+        public IActionResult Delete(int complaintId)
         {
             try
             {
                 // get specific header
                 Request.Headers.TryGetValue("id", out var id);
-                var userId = Convert.ToInt32(id.First());
+                var userId = 0;
 
-                _complaints.Delete(jobId, userId);
-                return Ok();
+                if (id.Count > 0)
+                {
+                    userId = Convert.ToInt32(id.First());
+                    _complaints.Delete(complaintId, userId);
+
+                    return Ok(new ApiOkResponse());
+                }
+
+                return NotFound(new ApiResponse(401));
 
             }
             catch (Exception x)

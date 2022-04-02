@@ -11,7 +11,7 @@ namespace Base.Services.Repository
     {
         public static IEnumerable<ComplaintsModel> GetComplaints(this IRepository<ComplaintsModel> repository)
         {
-            return repository.Get().Where(x => x.IsActive && !x.IsDeleted).ToList();
+            return repository.Get().Where(x => x.IsActive && !x.IsDeleted).OrderByDescending(ob => ob.DateCreated).ToList();
         }
 
         public static ComplaintsModel GetComplaintsById(this IRepository<ComplaintsModel> repository, int id)

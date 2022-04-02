@@ -26,6 +26,8 @@ namespace Base.Core.Helpers
             {
                 case 404:
                     return "Resource not found";
+                case 401:
+                    return "Unauthorized";
                 case 500:
                     return "An unhandled error occurred";
                 default:
@@ -37,6 +39,9 @@ namespace Base.Core.Helpers
     public class ApiOkResponse : ApiResponse
     {
         public List<object> Result { get; }
+
+        public ApiOkResponse()
+            : base(200) { }
 
         public ApiOkResponse(object result)
             : base(200)

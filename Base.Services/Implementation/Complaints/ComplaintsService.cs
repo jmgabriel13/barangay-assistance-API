@@ -21,17 +21,15 @@ namespace Base.Services.Implementation.Complaints
         }
 
         #region Action
-        public void Add(ComplaintsModel jobObject, int userId)
+        public void Add(ComplaintsModel complaintsObject, int userId)
         {
             _unitOfWork.BeginTransaction();
             try
             {
-                jobObject.DateCreated = DateTime.Now;
-                jobObject.DateModified = DateTime.Now;
-                jobObject.CreatedBy = userId;
-                jobObject.UpdatedBy = userId;
+                complaintsObject.DateCreated = DateTime.Now;
+                complaintsObject.CreatedBy = userId;
 
-                _repository.Add(jobObject);
+                _repository.Add(complaintsObject);
                 _unitOfWork.SaveChanges();
 
                 _unitOfWork.Commit();
@@ -43,13 +41,13 @@ namespace Base.Services.Implementation.Complaints
             }
         }
 
-        public void Update(ComplaintsModel jobObject, int userId)
+        public void Update(ComplaintsModel complaintsObject, int userId)
         {
             _unitOfWork.BeginTransaction();
             try
             {
-                var complaints = _repository.GetComplaintsById(jobObject.Id);
-                complaints.Complainant = jobObject.Complainant;
+                var complaints = _repository.GetComplaintsById(complaintsObject.Id);
+                complaints.Complainant = complaintsObject.Complainant;
                 complaints.UpdatedBy = userId;
                 complaints.DateModified = DateTime.Now;
 
@@ -72,6 +70,7 @@ namespace Base.Services.Implementation.Complaints
             {
                 var complaints = _repository.GetComplaintsById(id);
                 complaints.IsActive = false;
+                complaints.IsDeleted = true;
                 complaints.UpdatedBy = userId;
                 complaints.DateModified = DateTime.Now;
 
