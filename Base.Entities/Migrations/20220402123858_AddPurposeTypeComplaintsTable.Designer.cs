@@ -4,14 +4,16 @@ using Base.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Base.Entities.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220402123858_AddPurposeTypeComplaintsTable")]
+    partial class AddPurposeTypeComplaintsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,15 +70,15 @@ namespace Base.Entities.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Respondent")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Statement")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
@@ -121,21 +123,6 @@ namespace Base.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tbl_marital_status");
-                });
-
-            modelBuilder.Entity("Base.Entities.Models.PurposeStatusModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tbl_purposeStatus");
                 });
 
             modelBuilder.Entity("Base.Entities.Models.RoleModel", b =>
@@ -242,10 +229,10 @@ namespace Base.Entities.Migrations
                         {
                             Id = 1,
                             Age = 20,
-                            BirthDate = new DateTime(2022, 4, 5, 19, 45, 38, 254, DateTimeKind.Local).AddTicks(4955),
+                            BirthDate = new DateTime(2022, 4, 2, 20, 38, 57, 608, DateTimeKind.Local).AddTicks(5481),
                             BirthPlace = "Tabi tabi",
                             CreatedBy = 0,
-                            DateCreated = new DateTime(2022, 4, 5, 19, 45, 38, 254, DateTimeKind.Local).AddTicks(9123),
+                            DateCreated = new DateTime(2022, 4, 2, 20, 38, 57, 609, DateTimeKind.Local).AddTicks(301),
                             Email = "admin@mail.com",
                             FirstName = "Role",
                             Gender = 1,
@@ -258,8 +245,8 @@ namespace Base.Entities.Migrations
                             PhotoPath = "",
                             Position = 1,
                             Purok = "Purok 1",
-                            TermFrom = new DateTime(2022, 4, 5, 19, 45, 38, 254, DateTimeKind.Local).AddTicks(7716),
-                            TermTo = new DateTime(2023, 4, 5, 19, 45, 38, 254, DateTimeKind.Local).AddTicks(8142),
+                            TermFrom = new DateTime(2022, 4, 2, 20, 38, 57, 608, DateTimeKind.Local).AddTicks(8494),
+                            TermTo = new DateTime(2023, 4, 2, 20, 38, 57, 608, DateTimeKind.Local).AddTicks(8954),
                             UpdatedBy = 0,
                             Username = "admin"
                         });

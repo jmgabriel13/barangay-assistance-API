@@ -130,6 +130,40 @@ namespace Base.Services.Implementation.Account
             }
         }
 
+        public GenderDTO GetGender(int genderId)
+        {
+            var gender = _repoGender.GetGender(genderId);
+            if (gender == null)
+                return null;
+
+            var map = Mapper.Map<GenderModel, GenderDTO>(gender);
+            return map;
+        }
+
+        public IEnumerable<GenderDTO> GetAllGender()
+        {
+            var gender = _repoGender.GetAllGender();
+            var map = Mapper.Map<IEnumerable<GenderModel>, IEnumerable<GenderDTO>>(gender);
+            return map;
+        }
+
+        public RoleDTO GetRole(int roleId)
+        {
+            var role = _repoRole.GetRole(roleId);
+            if (role == null)
+                return null;
+
+            var map = Mapper.Map<RoleModel, RoleDTO>(role);
+            return map;
+        }
+
+        public IEnumerable<RoleDTO> GetAllRoles()
+        {
+            var roles = _repoRole.GetAllRoles();
+            var map = Mapper.Map<IEnumerable<RoleModel>, IEnumerable<RoleDTO>>(roles);
+            return map;
+        }
+
         public string GenerateToken()
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes($"ba secretKey@256"));

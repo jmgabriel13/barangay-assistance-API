@@ -15,6 +15,7 @@ namespace Base.Entities
         public DbSet<RoleModel> Role { get; set; }
         public DbSet<MaritalStatusModel> MaritalStatus { get; set; }
         public DbSet<GenderModel> Gender { get; set; }
+        public DbSet<PurposeStatusModel> Status { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)

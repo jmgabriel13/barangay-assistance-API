@@ -21,7 +21,6 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpGet("get")]
-        [Authorize]
         public IActionResult GetAllUsers()
         {
             try
@@ -105,6 +104,34 @@ namespace barangay_assistance_api.Controllers
                 _user.Delete(userId, userLoginId);
                 return Ok();
 
+            }
+            catch (Exception x)
+            {
+                return NotFound(new ApiResponse(500, x.Message));
+            }
+        }
+
+        [HttpGet("roles/get")]
+        public IActionResult GetAllRoles()
+        {
+            try
+            {
+                var roles = _user.GetAllRoles();
+                return Ok(new ApiOkResponse(roles));
+            }
+            catch (Exception x)
+            {
+                return NotFound(new ApiResponse(500, x.Message));
+            }
+        }
+
+        [HttpGet("gender/get")]
+        public IActionResult GetAllGenders()
+        {
+            try
+            {
+                var genders = _user.GetAllGender();
+                return Ok(new ApiOkResponse(genders));
             }
             catch (Exception x)
             {

@@ -36,4 +36,17 @@ namespace Base.Services.Implementation.Account
         public DateTime TermTo { get; set; }
         public bool IsActive { get; set; }
     }
+
+    public class GenderDTO
+    {
+        public int Id { get; set; }
+        public string Identifier { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class RoleDTO
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+    }
 }

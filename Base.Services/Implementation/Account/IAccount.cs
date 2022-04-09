@@ -14,5 +14,9 @@ namespace Base.Services.Implementation.Account
         void Delete(int id, int userId);
         bool ValidateUsername(string username);
         bool ValidateEmail(string email);
+        GenderDTO GetGender(int genderId);
+        IEnumerable<GenderDTO> GetAllGender();
+        RoleDTO GetRole(int roleId);
+        IEnumerable<RoleDTO> GetAllRoles();
     }
 }

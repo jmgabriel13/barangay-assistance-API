@@ -9,12 +9,12 @@ namespace Base.Services.Repository
 {
     public static class ComplaintsRepository
     {
-        public static IEnumerable<ComplaintsModel> GetComplaints(this IRepository<ComplaintsModel> repository)
+        public static IEnumerable<ComplaintsModel> GetLists(this IRepository<ComplaintsModel> repository, string type)
         {
-            return repository.Get().Where(x => x.IsActive && !x.IsDeleted).OrderByDescending(ob => ob.DateCreated).ToList();
+            return repository.Get().Where(x => x.IsActive && !x.IsDeleted && x.PurposeType.Trim().ToLower() == type.Trim().ToLower()).OrderByDescending(ob => ob.DateCreated).ToList();
         }
 
-        public static ComplaintsModel GetComplaintsById(this IRepository<ComplaintsModel> repository, int id)
+        public static ComplaintsModel GetPurposeById(this IRepository<ComplaintsModel> repository, int id)
         {
             return repository.Get().Where(x => x.Id == id && x.IsActive && !x.IsDeleted).FirstOrDefault();
         }

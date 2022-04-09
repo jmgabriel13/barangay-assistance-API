@@ -4,14 +4,16 @@ using Base.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Base.Entities.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220405094854_AddPurposeStatusTable")]
+    partial class AddPurposeStatusTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,15 +70,15 @@ namespace Base.Entities.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Respondent")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Statement")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
@@ -242,10 +244,10 @@ namespace Base.Entities.Migrations
                         {
                             Id = 1,
                             Age = 20,
-                            BirthDate = new DateTime(2022, 4, 5, 19, 45, 38, 254, DateTimeKind.Local).AddTicks(4955),
+                            BirthDate = new DateTime(2022, 4, 5, 17, 48, 51, 858, DateTimeKind.Local).AddTicks(7805),
                             BirthPlace = "Tabi tabi",
                             CreatedBy = 0,
-                            DateCreated = new DateTime(2022, 4, 5, 19, 45, 38, 254, DateTimeKind.Local).AddTicks(9123),
+                            DateCreated = new DateTime(2022, 4, 5, 17, 48, 51, 859, DateTimeKind.Local).AddTicks(5688),
                             Email = "admin@mail.com",
                             FirstName = "Role",
                             Gender = 1,
@@ -258,8 +260,8 @@ namespace Base.Entities.Migrations
                             PhotoPath = "",
                             Position = 1,
                             Purok = "Purok 1",
-                            TermFrom = new DateTime(2022, 4, 5, 19, 45, 38, 254, DateTimeKind.Local).AddTicks(7716),
-                            TermTo = new DateTime(2023, 4, 5, 19, 45, 38, 254, DateTimeKind.Local).AddTicks(8142),
+                            TermFrom = new DateTime(2022, 4, 5, 17, 48, 51, 859, DateTimeKind.Local).AddTicks(2935),
+                            TermTo = new DateTime(2023, 4, 5, 17, 48, 51, 859, DateTimeKind.Local).AddTicks(3797),
                             UpdatedBy = 0,
                             Username = "admin"
                         });

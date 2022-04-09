@@ -21,6 +21,15 @@ namespace Base.Core
             CreateMap<ComplaintsModel, AbsoluteComplaintsDTO>();
             CreateMap<AbsoluteComplaintsDTO, ComplaintsModel>();
 
+            CreateMap<GenderModel, GenderDTO>();
+            CreateMap<GenderDTO, RoleModel>();
+
+            CreateMap<RoleModel, RoleDTO>();
+            CreateMap<RoleDTO, RoleModel>();
+
+            CreateMap<PurposeStatusModel, PurposeStatusDTO>();
+            CreateMap<PurposeStatusDTO, PurposeStatusModel>();
+
         }
     }
 }

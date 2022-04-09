@@ -12,6 +12,8 @@ namespace Base.Entities.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        public string PurposeType { get; set; }
+        [Required]
         public string Complainant { get; set; }
         [Required]
         public string ContactNo { get; set; }
@@ -20,7 +22,6 @@ namespace Base.Entities.Models
         [Required]
         public string Statement { get; set; }
         public string Respondent { get; set; }
-        [Required]
         public string Involved { get; set; }
         [Required]
         public string ProofImgPath { get; set; }
@@ -28,6 +29,7 @@ namespace Base.Entities.Models
         public string VerificationImgPath { get; set; }
         [Required]
         public string Location { get; set; }
-        public string Remarks { get; set; }
+        [Required]
+        public int Status { get; set; }
     }
 }
