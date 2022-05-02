@@ -99,7 +99,7 @@ namespace Base.Services.Implementation.Complaints
             var purposeStatus = _purposeStatusRepository.GetAllPurposeStatus();
             //var map = Mapper.Map<IEnumerable<ComplaintsModel>, IEnumerable<AbsoluteComplaintsDTO>>(complaints);
 
-            var complaints = from cmp in comp
+            var complaints = (from cmp in comp
                              join status in purposeStatus on cmp.Status equals status.Id
                              select new AbsoluteComplaintsDTO()
                              {
@@ -111,8 +111,9 @@ namespace Base.Services.Implementation.Complaints
                                  ProofImgPath = cmp.ProofImgPath,
                                  VerificationImgPath = cmp.VerificationImgPath,
                                  Location = cmp.Location,
-                                 PurposeStatus = status.Description
-                             };
+                                 PurposeStatus = status.Description,
+                                 DateCreated = cmp.DateCreated
+                             }).OrderByDescending(ob => ob.DateCreated);
 
             return complaints;
         }

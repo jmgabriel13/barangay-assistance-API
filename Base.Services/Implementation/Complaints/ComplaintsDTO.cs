@@ -21,6 +21,7 @@ namespace Base.Services.Implementation.Complaints
         public string VerificationImgPath { get; set; }
         public string Location { get; set; }
         public string PurposeStatus { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 
     public class PurposeStatusDTO

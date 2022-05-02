@@ -11,7 +11,7 @@ namespace Base.Services.Repository
     {
         public static IEnumerable<ComplaintsModel> GetLists(this IRepository<ComplaintsModel> repository, string type)
         {
-            return repository.Get().Where(x => x.IsActive && !x.IsDeleted && x.PurposeType.Trim().ToLower() == type.Trim().ToLower()).OrderByDescending(ob => ob.DateCreated).ToList();
+            return repository.Get().Where(x => x.IsActive && !x.IsDeleted && x.PurposeType.Trim().ToLower() == type.Trim().ToLower()).ToList();
         }
 
         public static ComplaintsModel GetPurposeById(this IRepository<ComplaintsModel> repository, int id)

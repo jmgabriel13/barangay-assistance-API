@@ -76,14 +76,13 @@ namespace barangay_assistance_api.Controllers
                 Request.Headers.TryGetValue("id", out var id);
                 var userId = 0;
 
+                // checking if user or admin (user == 0, admin > 0)
                 if (id.Count > 0)
                 {
                     userId = Convert.ToInt32(id.First());
-                    _purpose.Add(purposeObject, userId);
-
-                    return Ok(new ApiOkResponse());
                 }
 
+                /// set the status as pending
                 purposeObject.Status = (int)EPurposeStatus.PENDING;
                 _purpose.Add(purposeObject, userId);
 
@@ -121,7 +120,7 @@ namespace barangay_assistance_api.Controllers
             }
         }
 
-        [HttpGet("delete/{complaintId}")]
+        [HttpGet("delete/{purposeId}")]
         [Authorize]
         public IActionResult Delete(int purposeId)
         {

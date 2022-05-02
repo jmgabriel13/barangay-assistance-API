@@ -1,5 +1,6 @@
 ﻿using Base.Entities;
 using Microsoft.EntityFrameworkCore.Storage;
+using System;
 
 namespace Base.EFCore.Repositories
 {
@@ -7,6 +8,7 @@ namespace Base.EFCore.Repositories
     {
         public BaseDbContext Context { get; }
         private IDbContextTransaction _dbTransactiion;
+        private bool disposed = false;
 
         public UnitOfWork(BaseDbContext context)
         {
@@ -16,11 +18,6 @@ namespace Base.EFCore.Repositories
         public void Commit()
         {
             _dbTransactiion.Commit();
-        }
-
-        public void Dispose()
-        {
-            Context.Dispose();
         }
 
         public void RollBack()
@@ -37,5 +34,24 @@ namespace Base.EFCore.Repositories
         {
             Context.SaveChanges();
         }
+
+        public void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    Context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
     }
 }
