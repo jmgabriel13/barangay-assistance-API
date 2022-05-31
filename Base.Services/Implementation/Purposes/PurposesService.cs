@@ -1,30 +1,33 @@
 ﻿using AutoMapper;
 using Base.EFCore.Repositories;
 using Base.Entities.Models;
+using Base.Services.Implementation.Mailer;
 using Base.Services.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Base.Services.Implementation.Complaints
 {
-    public class ComplaintsService : IComplaints
+    public class PurposesService : IPurposes
     {
 
         private readonly IRepository<ComplaintsModel> _repository;
         private readonly IRepository<PurposeStatusModel> _purposeStatusRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMailService _mailService;
 
-        public ComplaintsService(IRepository<ComplaintsModel> repository, IRepository<PurposeStatusModel> purposeStatusRepository, IUnitOfWork unitOfWork)
+        public PurposesService(IRepository<ComplaintsModel> repository, IRepository<PurposeStatusModel> purposeStatusRepository, IUnitOfWork unitOfWork, IMailService mailService)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _purposeStatusRepository = purposeStatusRepository;
+            _mailService = mailService;
         }
 
         #region Action
-        public void Add(ComplaintsModel complaintsObject, int userId)
+        public async Task Add(ComplaintsModel complaintsObject, int userId)
         {
             _unitOfWork.BeginTransaction();
             try
@@ -32,12 +35,20 @@ namespace Base.Services.Implementation.Complaints
                 complaintsObject.DateCreated = DateTime.Now;
                 complaintsObject.CreatedBy = userId;
 
+                var mail = new MailRequestDTO()
+                {
+                    ToEmail = complaintsObject.Email,
+                    Subject = complaintsObject.PurposeType,
+                    Body = PurposeNotifMessage(complaintsObject.Complainant)
+                };
+
                 _repository.Add(complaintsObject);
+                await _mailService.SendEmailAsync(mail);
                 _unitOfWork.SaveChanges();
 
                 _unitOfWork.Commit();
             }
-            catch (Exception x)
+            catch (Exception)
             {
                 _unitOfWork.RollBack();
                 throw;
@@ -92,6 +103,7 @@ namespace Base.Services.Implementation.Complaints
             }
         }
         #endregion
+
 
         public IEnumerable<AbsoluteComplaintsDTO> GetComplaints()
         {
@@ -151,6 +163,24 @@ namespace Base.Services.Implementation.Complaints
             var roles = _purposeStatusRepository.GetAllPurposeStatus();
             var map = Mapper.Map<IEnumerable<PurposeStatusModel>, IEnumerable<PurposeStatusDTO>>(roles);
             return map;
+        }
+
+        public static string PurposeNotifMessage(string name)
+        {
+            string message = "";
+            message = "<b>Hi " + name + ",</b> <br/><br/>"
+                + "Thanks for getting started with Netwire. <br/><br/>"
+                + "Here is your credential details for log in: <br/><br/>"
+                + "<i>Do not share these details with anyone. </i>" + "<br/><br/>"
+                + "Upon logging in, change your password. <br/><br/>"
+                + "Moving forward, you will be receiving OTP (One Time Password) via your email <br/>"
+                + "for every login attempt, valid only for 5 mins.<br/><br/><br/>"
+
+                + "Thanks, <br/><br/>"
+                + "<b>Baranggay </b>";
+
+
+            return message;
         }
     }
 }

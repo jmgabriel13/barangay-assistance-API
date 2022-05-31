@@ -1,4 +1,5 @@
-﻿using Base.Core.Helpers;
+﻿using barangay_assistance_api.Helpers.Utility;
+using Base.Core.Helpers;
 using Base.Services.Implementation.Account;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,10 +27,10 @@ namespace barangay_assistance_api.Controllers
 
             try
             {
-                var account = _login.GetAccount(userObj.Username, userObj.Password);
+                var account = _login.GetAccount(userObj.Username, Crypto.Encrypt(userObj.Password));
 
                 if (account == null)
-                    return BadRequest();
+                    return BadRequest("User not found or invalid username/password.");
 
                 return Ok(new ApiOkResponse(account));
             }

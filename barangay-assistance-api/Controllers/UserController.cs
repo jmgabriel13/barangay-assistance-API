@@ -58,8 +58,9 @@ namespace barangay_assistance_api.Controllers
                 //  encrypt password
                 userObject.Password = Crypto.Encrypt(userObject.Password);
 
-                _user.Add(userObject, 1);
-                return Ok();
+                _user.Add(userObject, userId);
+
+                return Ok(new ApiOkResponse());
             }
             catch (Exception x)
             {
@@ -84,7 +85,8 @@ namespace barangay_assistance_api.Controllers
                     return BadRequest("Email already taken.");
 
                 _user.Update(userObject, userId);
-                return Ok();
+
+                return Ok(new ApiOkResponse());
             }
             catch (Exception x)
             {
@@ -102,7 +104,8 @@ namespace barangay_assistance_api.Controllers
                 var userLoginId = Convert.ToInt32(id.First());
 
                 _user.Delete(userId, userLoginId);
-                return Ok();
+
+                return Ok(new ApiOkResponse());
 
             }
             catch (Exception x)

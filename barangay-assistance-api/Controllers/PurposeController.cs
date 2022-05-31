@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace barangay_assistance_api.Controllers
 {
@@ -15,9 +16,9 @@ namespace barangay_assistance_api.Controllers
     [ApiController]
     public class PurposeController : ControllerBase
     {
-        private readonly IComplaints _purpose;
+        private readonly IPurposes _purpose;
 
-        public PurposeController(IComplaints purpose)
+        public PurposeController(IPurposes purpose)
         {
             _purpose = purpose;
         }
@@ -68,7 +69,7 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromBody] ComplaintsModel purposeObject)
+        public async Task<IActionResult> Add([FromBody] ComplaintsModel purposeObject)
         {
             try
             {
@@ -84,7 +85,7 @@ namespace barangay_assistance_api.Controllers
 
                 /// set the status as pending
                 purposeObject.Status = (int)EPurposeStatus.PENDING;
-                _purpose.Add(purposeObject, userId);
+                await _purpose.Add(purposeObject, userId);
 
                 return Ok(new ApiOkResponse());
             }

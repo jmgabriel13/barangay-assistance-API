@@ -27,7 +27,7 @@ namespace Base.Entities
                 Id = 1,
                 PhotoPath = "",
                 Username = "admin",
-                Password = "admin",
+                Password = "16595B69860F6CCD",
                 FirstName = "Role",
                 LastName = "Admin",
                 Age = 20,

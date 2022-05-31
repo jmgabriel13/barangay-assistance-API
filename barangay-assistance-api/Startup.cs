@@ -4,6 +4,7 @@ using Base.EFCore.Repositories;
 using Base.Entities;
 using Base.Services.Implementation.Account;
 using Base.Services.Implementation.Complaints;
+using Base.Services.Implementation.Mailer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,9 +60,7 @@ namespace barangay_assistance_api
             });
 
             services.AddDbContext<BaseDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             Mapper.Initialize(x => x.AddProfile<AutoMapping>());
             services.AddAutoMapper();
@@ -74,7 +73,11 @@ namespace barangay_assistance_api
 
             #region Scope Registration
             services.AddScoped<IAccount, AccountServices>();
-            services.AddScoped<IComplaints, ComplaintsService>();
+            services.AddScoped<IPurposes, PurposesService>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddTransient<IMailService, MailService>();
             #endregion
         }
 

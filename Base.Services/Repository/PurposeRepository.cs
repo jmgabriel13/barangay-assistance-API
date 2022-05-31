@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Base.Services.Repository
 {
-    public static class ComplaintsRepository
+    public static class PurposeRepository
     {
         public static IEnumerable<ComplaintsModel> GetLists(this IRepository<ComplaintsModel> repository, string type)
         {

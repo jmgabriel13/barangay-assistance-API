@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Base.Services.Implementation.Complaints
 {
-    public interface IComplaints
+    public interface IPurposes
     {
-        void Add(ComplaintsModel compObject, int userId);
+        Task Add(ComplaintsModel compObject, int userId);
         void Update(UpdatePurposeDTO purposeObject, int userId);
         void Delete(int id, int userId);
         bool ValidateComplaints(string name, int? id = null);

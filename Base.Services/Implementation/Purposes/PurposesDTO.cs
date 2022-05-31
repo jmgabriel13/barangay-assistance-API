@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Base.Services.Implementation.Complaints
 {
-    public class ComplaintsDTO
+    public class PurposesDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
