@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Base.EFCore.Repositories;
 using Base.Entities.Models;
+using Base.Services.Helpers.Utility;
 using Base.Services.Implementation.Mailer;
 using Base.Services.Repository;
 using System;
@@ -27,22 +28,25 @@ namespace Base.Services.Implementation.Complaints
         }
 
         #region Action
-        public async Task Add(ComplaintsModel complaintsObject, int userId)
+        public async Task Add(ComplaintsModel purposeObject, int userId)
         {
             _unitOfWork.BeginTransaction();
             try
             {
-                complaintsObject.DateCreated = DateTime.Now;
-                complaintsObject.CreatedBy = userId;
+                purposeObject.DateCreated = DateTime.Now;
+                purposeObject.CreatedBy = userId;
+
+                /// set the status as pending
+                purposeObject.Status = (int)EPurposeStatus.PENDING;
 
                 var mail = new MailRequestDTO()
                 {
-                    ToEmail = complaintsObject.Email,
-                    Subject = complaintsObject.PurposeType,
-                    Body = PurposeNotifMessage(complaintsObject.Complainant)
+                    ToEmail = purposeObject.Email,
+                    Subject = purposeObject.PurposeType,
+                    Body = PurposeNotifMessage(purposeObject.Complainant)
                 };
 
-                _repository.Add(complaintsObject);
+                _repository.Add(purposeObject);
                 await _mailService.SendEmailAsync(mail);
                 _unitOfWork.SaveChanges();
 
@@ -77,6 +81,7 @@ namespace Base.Services.Implementation.Complaints
             catch (Exception)
             {
                 _unitOfWork.RollBack();
+                throw;
             }
         }
 
@@ -100,6 +105,7 @@ namespace Base.Services.Implementation.Complaints
             catch (Exception)
             {
                 _unitOfWork.RollBack();
+                throw;
             }
         }
         #endregion

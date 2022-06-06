@@ -1,5 +1,5 @@
-﻿using barangay_assistance_api.Helpers.Utility;
-using Base.Core.Helpers;
+﻿using barangay_assistance_api.Helpers.Response;
+using Base.Services.Helpers.Utility;
 using Base.Services.Implementation.Account;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +11,8 @@ namespace barangay_assistance_api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAccount _login;
+
+        private readonly Logger _logger;
 
         public AuthController(IAccount login)
         {
@@ -27,7 +29,7 @@ namespace barangay_assistance_api.Controllers
 
             try
             {
-                var account = _login.GetAccount(userObj.Username, Crypto.Encrypt(userObj.Password));
+                var account = _login.GetAccount(userObj.Username, userObj.Password);
 
                 if (account == null)
                     return BadRequest("User not found or invalid username/password.");
@@ -36,6 +38,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"GetAccount (login) | userObj: {userObj}");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }

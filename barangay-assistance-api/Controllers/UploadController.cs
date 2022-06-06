@@ -1,9 +1,7 @@
-﻿using barangay_assistance_api.Helpers.Utility;
-using Base.Core.Helpers;
+﻿using barangay_assistance_api.Helpers.Response;
+using Base.Services.Helpers.Utility;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace barangay_assistance_api.Controllers
@@ -11,20 +9,23 @@ namespace barangay_assistance_api.Controllers
     [Route("api/upload")]
     [ApiController]
     [DisableRequestSizeLimit]
-    public class UploadController : Controller
+    public class UploadController : ControllerBase
     {
+        private readonly Logger _logger;
+
         [HttpPost("")]
-        public IActionResult Upload(string type = "")
+        public async Task<IActionResult> Upload(string type = "")
         {
             try
             {
                 var file = Request.Form.Files[0];
-                var path = UploadFile.Photo(file, type);
+                var path = await UploadFile.Photo(file, type);
 
                 return Ok(path);
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Upload Image | type: {type}");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }

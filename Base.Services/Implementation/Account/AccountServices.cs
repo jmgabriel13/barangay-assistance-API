@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Base.EFCore.Repositories;
 using Base.Entities.Models;
+using Base.Services.Helpers.Utility;
 using Base.Services.Repository;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -18,6 +19,7 @@ namespace Base.Services.Implementation.Account
         private readonly IRepository<RoleModel> _repoRole;
         private readonly IRepository<GenderModel> _repoGender;
         private readonly IUnitOfWork _unitOfWork;
+
         public AccountServices(IRepository<UserModel> repo, IRepository<RoleModel> repoRole, IRepository<GenderModel> repoGender, IUnitOfWork unitOfWork)
         {
             _repo = repo;
@@ -28,7 +30,7 @@ namespace Base.Services.Implementation.Account
 
         public AccountDTO GetAccount(string username, string password)
         {
-            var account = _repo.GetAccount(username, password);
+            var account = _repo.GetAccount(username, Crypto.Encrypt(password));
             if (account == null)
                 return null;
 
@@ -76,12 +78,15 @@ namespace Base.Services.Implementation.Account
                 userObject.DateCreated = DateTime.Now;
                 userObject.CreatedBy = userId;
 
+                //  encrypt password
+                userObject.Password = Crypto.Encrypt(userObject.Password);
+
                 _repo.Add(userObject);
                 _unitOfWork.SaveChanges();
 
                 _unitOfWork.Commit();
             }
-            catch (Exception x)
+            catch (Exception)
             {
                 _unitOfWork.RollBack();
                 throw;
@@ -106,6 +111,7 @@ namespace Base.Services.Implementation.Account
             catch (Exception)
             {
                 _unitOfWork.RollBack();
+                throw;
             }
         }
 
@@ -127,6 +133,7 @@ namespace Base.Services.Implementation.Account
             catch (Exception)
             {
                 _unitOfWork.RollBack();
+                throw;
             }
         }
 

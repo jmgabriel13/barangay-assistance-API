@@ -1,13 +1,11 @@
-﻿using barangay_assistance_api.Helpers.Utility;
-using Base.Core.Helpers;
+﻿using barangay_assistance_api.Helpers.Response;
 using Base.Entities.Models;
+using Base.Services.Helpers.Utility;
 using Base.Services.Implementation.Complaints;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace barangay_assistance_api.Controllers
@@ -17,6 +15,8 @@ namespace barangay_assistance_api.Controllers
     public class PurposeController : ControllerBase
     {
         private readonly IPurposes _purpose;
+
+        private readonly Logger _logger = new();
 
         public PurposeController(IPurposes purpose)
         {
@@ -34,6 +34,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Get Complaints | :");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -49,6 +50,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Get Assistances | :");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -64,6 +66,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Get PurposeStatus | :");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -71,11 +74,12 @@ namespace barangay_assistance_api.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] ComplaintsModel purposeObject)
         {
+            int userId = 0;
+
             try
             {
                 // get specific header
                 Request.Headers.TryGetValue("id", out var id);
-                var userId = 0;
 
                 // checking if user or admin (user == 0, admin > 0)
                 if (id.Count > 0)
@@ -83,14 +87,13 @@ namespace barangay_assistance_api.Controllers
                     userId = Convert.ToInt32(id.First());
                 }
 
-                /// set the status as pending
-                purposeObject.Status = (int)EPurposeStatus.PENDING;
                 await _purpose.Add(purposeObject, userId);
 
                 return Ok(new ApiOkResponse());
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Add Purpose | purposeObject: {purposeObject} | userId: {userId}");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -99,6 +102,8 @@ namespace barangay_assistance_api.Controllers
         [Authorize]
         public IActionResult Update([FromBody] UpdatePurposeDTO purposeObject)
         {
+            int userId = 0;
+
             try
             {
                 // get specific header
@@ -106,7 +111,7 @@ namespace barangay_assistance_api.Controllers
 
                 if (id.Count > 0)
                 {
-                    var userId = Convert.ToInt32(id.First());
+                    userId = Convert.ToInt32(id.First());
                     _purpose.Update(purposeObject, userId);
 
                     return Ok(new ApiOkResponse());
@@ -117,6 +122,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Update Purpose | purposeObject: {purposeObject} | userId: {userId}");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -125,6 +131,8 @@ namespace barangay_assistance_api.Controllers
         [Authorize]
         public IActionResult Delete(int purposeId)
         {
+            int userId = 0;
+
             try
             {
                 // get specific header
@@ -132,7 +140,7 @@ namespace barangay_assistance_api.Controllers
 
                 if (id.Count > 0)
                 {
-                    var userId = Convert.ToInt32(id.First());
+                    userId = Convert.ToInt32(id.First());
                     _purpose.Delete(purposeId, userId);
 
                     return Ok(new ApiOkResponse());
@@ -143,6 +151,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Delete Purpose | purposeId: {purposeId} | userId: {userId}");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }

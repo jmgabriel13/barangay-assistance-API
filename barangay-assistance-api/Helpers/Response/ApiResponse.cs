@@ -3,9 +3,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Base.Core.Helpers
+namespace barangay_assistance_api.Helpers.Response
 {
     public class ApiResponse
     {

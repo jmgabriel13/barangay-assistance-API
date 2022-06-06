@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace barangay_assistance_api.Helpers.Utility
+namespace Base.Services.Helpers.Utility
 {
     public class Crypto
     {

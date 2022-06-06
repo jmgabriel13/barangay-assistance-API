@@ -1,6 +1,6 @@
-﻿using barangay_assistance_api.Helpers.Utility;
-using Base.Core.Helpers;
+﻿using barangay_assistance_api.Helpers.Response;
 using Base.Entities.Models;
+using Base.Services.Helpers.Utility;
 using Base.Services.Implementation.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +15,8 @@ namespace barangay_assistance_api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IAccount _user;
+
+        private readonly Logger _logger;
         public UserController(IAccount user)
         {
             _user = user;
@@ -30,6 +32,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"GetAllUsers | :");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -37,6 +40,8 @@ namespace barangay_assistance_api.Controllers
         [HttpPost("add")]
         public IActionResult Add([FromBody] UserModel userObject)
         {
+            int userId = 0;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(new ApiBadRequestResponse(ModelState));
@@ -46,7 +51,7 @@ namespace barangay_assistance_api.Controllers
             {
                 // get specific header
                 Request.Headers.TryGetValue("id", out var id);
-                var userId = Convert.ToInt32(id.First());
+                userId = Convert.ToInt32(id.First());
 
                 // validate
                 if (_user.ValidateUsername(userObject.Username))
@@ -55,15 +60,13 @@ namespace barangay_assistance_api.Controllers
                 if (_user.ValidateEmail(userObject.Email))
                     return BadRequest("Email already taken.");
 
-                //  encrypt password
-                userObject.Password = Crypto.Encrypt(userObject.Password);
-
                 _user.Add(userObject, userId);
 
                 return Ok(new ApiOkResponse());
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Add User | userObject: {userObject.Serialize()} | userId: {userId}");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -71,11 +74,13 @@ namespace barangay_assistance_api.Controllers
         [HttpPut("update")]
         public IActionResult Update([FromBody] UserModel userObject)
         {
+            int userId = 0;
+
             try
             {
                 // get specific header
                 Request.Headers.TryGetValue("id", out var id);
-                var userId = Convert.ToInt32(id.First());
+                userId = Convert.ToInt32(id.First());
 
                 // validate
                 if (_user.ValidateUsername(userObject.Username))
@@ -90,6 +95,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Update User | userObject: {userObject.Serialize()} | userId: {userId}");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -97,19 +103,21 @@ namespace barangay_assistance_api.Controllers
         [HttpGet("delete/{userId}")]
         public IActionResult Delete(int userId)
         {
+            int userLoginId = 0;
+
             try
             {
                 // get specific header
                 Request.Headers.TryGetValue("id", out var id);
-                var userLoginId = Convert.ToInt32(id.First());
+                userLoginId = Convert.ToInt32(id.First());
 
                 _user.Delete(userId, userLoginId);
 
                 return Ok(new ApiOkResponse());
-
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"Delete User | userId: {userId} | userLoginId: {userLoginId}");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -124,6 +132,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"GetAllRoles | :");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }
@@ -138,6 +147,7 @@ namespace barangay_assistance_api.Controllers
             }
             catch (Exception x)
             {
+                _logger.LogException(x, $"GetAllGenders | :");
                 return NotFound(new ApiResponse(500, x.Message));
             }
         }

@@ -9,11 +9,11 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace barangay_assistance_api.Helpers.Utility
+namespace Base.Services.Helpers.Utility
 {
     public class UploadFile
     {
-        public static string Photo(IFormFile file, string type = "")
+        public static async Task<string> Photo(IFormFile file, string type = "")
         {
             var folderName = Path.Combine("Resources", "Images", type);
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
@@ -30,12 +30,12 @@ namespace barangay_assistance_api.Helpers.Utility
                 var dbPath = Path.Combine(folderName, fileName);
 
                 var image = Image.FromStream(file.OpenReadStream());
-                var resized = ResizeImage(image, 256, 256);
+                var resized = await ResizeImage(image, 256, 256);
                 using var imageStream = new MemoryStream();
                 resized.Save(imageStream, ImageFormat.Jpeg);
                 var imageBytes = imageStream.ToArray();
 
-                using (var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.Write, 4096))
+                await using (var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.Write, 4096))
                 {
                     stream.Write(imageBytes, 0, imageBytes.Length);
                     file.CopyTo(stream);
@@ -49,7 +49,7 @@ namespace barangay_assistance_api.Helpers.Utility
             }
         }
 
-        public static Bitmap ResizeImage(Image image, int width, int height)
+        public static async Task<Bitmap> ResizeImage(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
             var resultImage = new Bitmap(width, height);

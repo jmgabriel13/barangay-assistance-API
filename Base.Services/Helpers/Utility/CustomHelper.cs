@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace barangay_assistance_api.Helpers.Utility
+namespace Base.Services.Helpers.Utility
 {
     public class CustomHelper
     {
