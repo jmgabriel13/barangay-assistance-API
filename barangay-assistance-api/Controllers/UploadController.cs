@@ -11,7 +11,7 @@ namespace barangay_assistance_api.Controllers
     [DisableRequestSizeLimit]
     public class UploadController : ControllerBase
     {
-        private readonly Logger _logger;
+        private readonly Logger _logger = new();
 
         [HttpPost("")]
         public async Task<IActionResult> Upload(string type = "")

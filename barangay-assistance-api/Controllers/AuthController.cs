@@ -1,6 +1,7 @@
 ﻿using barangay_assistance_api.Helpers.Response;
 using Base.Services.Helpers.Utility;
 using Base.Services.Implementation.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -8,11 +9,12 @@ namespace barangay_assistance_api.Controllers
 {
     [Route("api/auth")]
     [ApiController]
+    [Authorize]
     public class AuthController : ControllerBase
     {
         private readonly IAccount _login;
 
-        private readonly Logger _logger;
+        private readonly Logger _logger = new();
 
         public AuthController(IAccount login)
         {
@@ -20,6 +22,7 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public IActionResult GetAccount([FromBody] UserLoginDTO userObj)
         {
             if (!ModelState.IsValid)

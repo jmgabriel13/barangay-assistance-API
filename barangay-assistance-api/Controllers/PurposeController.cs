@@ -12,6 +12,7 @@ namespace barangay_assistance_api.Controllers
 {
     [Route("api/purpose")]
     [ApiController]
+    [Authorize]
     public class PurposeController : ControllerBase
     {
         private readonly IPurposes _purpose;
@@ -24,7 +25,6 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpGet("complaints/get")]
-        [Authorize]
         public IActionResult Complaints()
         {
             try
@@ -40,7 +40,6 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpGet("assistance/get")]
-        [Authorize]
         public IActionResult Assistances()
         {
             try
@@ -56,7 +55,6 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpGet("status/get")]
-        [Authorize]
         public IActionResult PurposeStatus()
         {
             try
@@ -72,6 +70,7 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpPost("add")]
+        [AllowAnonymous]
         public async Task<IActionResult> Add([FromBody] ComplaintsModel purposeObject)
         {
             int userId = 0;
@@ -99,7 +98,6 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize]
         public IActionResult Update([FromBody] UpdatePurposeDTO purposeObject)
         {
             int userId = 0;
@@ -128,7 +126,6 @@ namespace barangay_assistance_api.Controllers
         }
 
         [HttpGet("delete/{purposeId}")]
-        [Authorize]
         public IActionResult Delete(int purposeId)
         {
             int userId = 0;

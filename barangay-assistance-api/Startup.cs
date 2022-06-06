@@ -46,16 +46,17 @@ namespace barangay_assistance_api
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(opts =>
             {
+                opts.SaveToken = true;
                 opts.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = "http://localhost:44360",
-                    ValidAudience = "http://localhost:44360",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ba secretKey@256"))
+                    ValidIssuer = Configuration["JWT:Issuer"],
+                    ValidAudience = Configuration["JWT:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
                 };
             });
 
@@ -86,10 +87,9 @@ namespace barangay_assistance_api
         {
             if (env.IsDevelopment())
             {
-                
+                app.UseDeveloperExceptionPage();
             }
 
-            app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "barangay_assistance_api v1"));
 
@@ -98,8 +98,10 @@ namespace barangay_assistance_api
             app.UseRouting();
 
             app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {

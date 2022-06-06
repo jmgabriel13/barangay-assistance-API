@@ -16,7 +16,8 @@ namespace barangay_assistance_api.Controllers
     {
         private readonly IAccount _user;
 
-        private readonly Logger _logger;
+        private readonly Logger _logger = new();
+
         public UserController(IAccount user)
         {
             _user = user;
