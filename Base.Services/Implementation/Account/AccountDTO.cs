@@ -13,6 +13,10 @@ namespace Base.Services.Implementation.Account
     public class AccountDTO
     {
         public int Id { get; set; }
+        public string PhotoPath { get; set; }
+        public string Name => $"{FirstName} {LastName}";
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }

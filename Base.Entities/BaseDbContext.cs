@@ -25,7 +25,7 @@ namespace Base.Entities
             builder.Entity<UserModel>().HasData(new UserModel
             {
                 Id = 1,
-                PhotoPath = "",
+                PhotoPath = "Resources\\Images\\profile\\sample.jpg",
                 Username = "admin",
                 Password = "16595B69860F6CCD",
                 FirstName = "Role",
