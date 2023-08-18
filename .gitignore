@@ -276,4 +276,6 @@ __pycache__/
 # tools/
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore
-/barangay-assistance-api/_errorlogs/202206
+/barangay-assistance-api/_errorlogs/
+
+/barangay-assistance-api/Properties
