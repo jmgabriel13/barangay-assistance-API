@@ -7,6 +7,7 @@ using Base.Services.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Base.Services.Implementation.Complaints
@@ -47,7 +48,9 @@ namespace Base.Services.Implementation.Complaints
                 };
 
                 _repository.Add(purposeObject);
-                await _mailService.SendEmailAsync(mail);
+                // to be fix the email sending
+                //await _mailService.SendEmailAsync(mail);
+                await Task.Delay(1000);
                 _unitOfWork.SaveChanges();
 
                 _unitOfWork.Commit();
