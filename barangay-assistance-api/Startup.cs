@@ -94,7 +94,6 @@ namespace barangay_assistance_api
             app.UseSwaggerUI(c => 
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "barangay_assistance_api v1");
-                c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
@@ -115,7 +114,8 @@ namespace barangay_assistance_api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers(); 
+                endpoints.MapFallbackToFile("/index.html");
             });
         }
     }

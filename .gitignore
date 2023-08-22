@@ -279,3 +279,5 @@ __pycache__/
 /barangay-assistance-api/_errorlogs/
 
 /barangay-assistance-api/Properties
+/barangay-assistance-api/ClientApp
+/barangay-assistance-api/wwwroot
